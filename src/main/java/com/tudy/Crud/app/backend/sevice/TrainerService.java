@@ -55,7 +55,7 @@ public class TrainerService {
         projectSet = trainer.getAssignedProjects();
         projectSet.add(project);
         trainer.setAssignedProjects(projectSet);
-        System.out.println(trainer.getAssignedProjects());
+
         return trainerRepo.save(trainer);
     }
 
