@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -26,8 +28,11 @@ public class Trainer {
     @Column
     private String phoneNumber;
 
-    @ManyToOne
-    private Project project;
+    @ManyToMany
+    @JoinTable(name = "trainers_projects",
+    joinColumns = @JoinColumn(name ="trainer_id"),
+    inverseJoinColumns = @JoinColumn(name = "project_id"))
+    private Set<Project> assignedProjects = new HashSet<>();
 
 
 

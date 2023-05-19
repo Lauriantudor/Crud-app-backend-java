@@ -1,12 +1,13 @@
 package com.tudy.Crud.app.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DialectOverride;
+
+
 
 import java.util.HashSet;
-import java.util.List;
+
 import java.util.Set;
 
 @Data
@@ -29,8 +30,9 @@ public class Project {
     @Column
     private String place;
 
-//    @OneToMany(mappedBy = "project")
-//    private List<Trainer> trainers;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "assignedProjects")
+    private Set<Trainer> trainersSet = new HashSet<>();
 
 
 

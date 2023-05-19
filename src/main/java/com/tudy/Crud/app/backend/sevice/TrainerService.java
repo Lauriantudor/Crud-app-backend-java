@@ -2,17 +2,23 @@ package com.tudy.Crud.app.backend.sevice;
 
 import com.tudy.Crud.app.backend.model.Project;
 import com.tudy.Crud.app.backend.model.Trainer;
+import com.tudy.Crud.app.backend.repo.ProjectRepo;
 import com.tudy.Crud.app.backend.repo.TrainerRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
+@Transactional
 public class TrainerService {
     @Autowired
     private TrainerRepo trainerRepo;
-
+    @Autowired
+    private ProjectRepo projectRepo;
 
 
     public Trainer saveTrainer(Trainer trainer){
@@ -35,17 +41,32 @@ public class TrainerService {
 
         return trainerRepo.save(exitingTrainer);
     }
-    public Trainer addProjectTo(long id, Project project){
-        Trainer toTrainer = trainerRepo.findById(id).orElse(null);
-        toTrainer.setProject(project);
-        return toTrainer;
-    }
+
 
     public void deleteTrainer(long id){
         trainerRepo.deleteById(id);
     }
 
 
+    public Trainer assignProjectToTrainer(long trainerId, long projectId) {
+        Set<Project> projectSet =null;
+        Trainer trainer = trainerRepo.findById(trainerId).get();
+        Project project = projectRepo.findById(projectId).get();
+        projectSet = trainer.getAssignedProjects();
+        projectSet.add(project);
+        trainer.setAssignedProjects(projectSet);
+        System.out.println(trainer.getAssignedProjects());
+        return trainerRepo.save(trainer);
+    }
 
-
+    public Trainer removeProjectFromTrainer(long trainerId, long projectId) {
+        Set<Project> projectSet =null;
+        Trainer trainer = trainerRepo.findById(trainerId).get();
+        Project project = projectRepo.findById(projectId).get();
+        projectSet = trainer.getAssignedProjects();
+        projectSet.remove(project);
+        trainer.setAssignedProjects(projectSet);
+        System.out.println(trainer.getAssignedProjects());
+        return trainerRepo.save(trainer);
+    }
 }

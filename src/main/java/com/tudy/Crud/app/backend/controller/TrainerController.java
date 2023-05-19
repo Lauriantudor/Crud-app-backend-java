@@ -34,9 +34,13 @@ public class TrainerController {
        return trainerService.updateTrainer(id,trainer);
     }
 
-    @PutMapping("addTo/{id}")
-    public Trainer addProjectTo(@PathVariable long id, @RequestBody Project project){
-        return trainerService.addProjectTo(id,project);
+    @PutMapping("{trainerId}/projectTo/{projectId}")
+    public Trainer assignProjectToTrainer(@PathVariable long trainerId, @PathVariable long projectId){
+        return  trainerService.assignProjectToTrainer(trainerId,projectId);
+    }
+    @PutMapping("{trainerId}/remove/{projectId}")
+    public Trainer removeProjectFromTrainer(@PathVariable long trainerId, @PathVariable long projectId){
+        return  trainerService.removeProjectFromTrainer(trainerId,projectId);
     }
 
     @DeleteMapping("{id}")
